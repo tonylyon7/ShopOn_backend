@@ -41,3 +41,24 @@ export const vendor_signup = asyncHandler(async (req, res) => {
     }
   }
 })
+
+export const vendor_signin = asyncHandler(async (req, res) => {
+  const {email, password} = req.body
+
+  const vendor = await Vendor.findOne({email})
+  if (!Vendor || !bcrypt.compareSync(password, venodr.password)) {
+    res.json({error: "Email or password is incorrect"})
+  } else {
+    res.json({
+      status: "Ok",
+      message: "Login successful",
+      data: {
+        _id: vendor._id,
+        userName: vendor.userName,
+        email: vendor.email,
+        password: vendor.password,
+        token: generateToken(vendor._id),
+      },
+    })
+  }
+})
