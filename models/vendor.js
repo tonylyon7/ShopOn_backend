@@ -6,6 +6,6 @@ const vendorSchema = mongoose.Schema({
   password: {type: String},
 })
 
-const Vendor = mongoose.model(Vendor, vendorSchema)
+const Vendor = mongoose.model("Vendor", vendorSchema)
 
 export default Vendor
