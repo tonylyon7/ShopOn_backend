@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler"
-// import bcrypt from "bcryptjs"
+import bcrypt from "bcryptjs"
 import {generateToken} from "../utilities/generate_token.js"
 import Vendor from "../models/vendor.js"
 import {token} from "morgan"
@@ -8,9 +8,7 @@ export const vendor_signup = asyncHandler(async (req, res) => {
   const {email, userName, password} = req.body
   console.log(req.body)
 
-  const vendorExist = await Vendor.find({
-    $or: [{email: email}],
-  })
+  const vendorExist = await Vendor.find()
 
   if (vendorExist.length > 0) {
     res.json({error: "Vendor already exist"})
@@ -46,7 +44,7 @@ export const vendor_signin = asyncHandler(async (req, res) => {
   const {email, password} = req.body
 
   const vendor = await Vendor.findOne({email})
-  if (!Vendor || !bcrypt.compareSync(password, venodr.password)) {
+  if (!vendor || !bcrypt.compareSync(password, vendor.password)) {
     res.json({error: "Email or password is incorrect"})
   } else {
     res.json({
