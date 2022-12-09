@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler"
-import bcrypt from "bcryptjs"
+import bcrypt from "bcrypt"
 import { generateToken } from "../utilities/generate_token.js"
 import Vendor from "../models/vendor.js"
 import { token } from "morgan"
