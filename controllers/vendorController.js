@@ -9,7 +9,8 @@ export const vendor_signup = asyncHandler(async(req, res) => {
         email,
         storeName,
         password,
-        img,
+        vendorImg,
+        storeBanner,
         country,
         state,
         phoneNumber,
@@ -19,33 +20,34 @@ export const vendor_signup = asyncHandler(async(req, res) => {
     } = req.body
     console.log(req.body)
 
-    const vendorExist = await Vendor.find()
+    const vendorExist = await Vendor.find({ $and: [{ email: email }, { phoneNumber: phoneNumber }, { storeName: storeName }] })
 
     if (vendorExist.length > 0) {
         res.json({ error: "Vendor already exist" })
     } else {
         const hashedPass = await bcrypt.hash(password, 10)
 
-        const mappedImg = await img.map((vendor, store) => {
-            return { vendor, store }
+        // const mappedImg = await img.map((vendor, store) => {
+        //     return { vendor, store }
 
 
-            // if (mappedImg > 0) {
-            //     res.status(201).json({
-            //         status: "Ok",
-            //         data: {
-            //             img: vendor.img
-            //         }
-            //     })
-            // }
+        //     // if (mappedImg > 0) {
+        //     //     res.status(201).json({
+        //     //         status: "Ok",
+        //     //         data: {
+        //     //             img: vendor.img
+        //     //         }
+        //     //     })
+        //     // }
 
-        })
+        // })
 
         const vendor = await Vendor.create({
             email,
             storeName,
             password: hashedPass,
-            img: mappedImg,
+            vendorImg,
+            storeBanner,
             country,
             state,
             phoneNumber,
@@ -62,14 +64,15 @@ export const vendor_signup = asyncHandler(async(req, res) => {
                     email: vendor.email,
                     storeName: vendor.storeName,
                     password: vendor.password,
-                    img: vendor.img,
+                    vendorImg: vendor.vendorImg,
+                    storeBanner: vendor.storeBanner,
                     country: vendor.country,
                     state: vendor.state,
                     phoneNumber: vendor.phoneNumber,
                     bankName: vendor.bankName,
                     accountName: vendor.accountName,
                     accountNumber: vendor.accountNumber,
-                    token: generateToken(user._id),
+                    token: generateToken(vendor._id),
                 },
             })
         } else {
@@ -95,7 +98,8 @@ export const vendor_signin = asyncHandler(async(req, res) => {
                 email: vendor.email,
                 storeName: vendor.storeName,
                 password: vendor.password,
-                img: vendor.img,
+                vendorImg: vendor.vendorImg,
+                storeBanner: vendor.storeBanner,
                 country: vendor.country,
                 state: vendor.state,
                 phoneNumber: vendor.phoneNumber,
