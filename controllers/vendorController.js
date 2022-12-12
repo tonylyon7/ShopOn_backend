@@ -5,7 +5,18 @@ import Vendor from "../models/vendor.js"
 import { token } from "morgan"
 
 export const vendor_signup = asyncHandler(async(req, res) => {
-    const { email, userName, password } = req.body
+    const {
+        email,
+        storeName,
+        password,
+        img,
+        country,
+        state,
+        phoneNumber,
+        bankName,
+        accountName,
+        accountNumber
+    } = req.body
     console.log(req.body)
 
     const vendorExist = await Vendor.find()
@@ -15,10 +26,32 @@ export const vendor_signup = asyncHandler(async(req, res) => {
     } else {
         const hashedPass = await bcrypt.hash(password, 10)
 
+        const mappedImg = await img.map((vendor, store) => {
+            return { vendor, store }
+
+
+            // if (mappedImg > 0) {
+            //     res.status(201).json({
+            //         status: "Ok",
+            //         data: {
+            //             img: vendor.img
+            //         }
+            //     })
+            // }
+
+        })
+
         const vendor = await Vendor.create({
-            userName,
             email,
+            storeName,
             password: hashedPass,
+            img: mappedImg,
+            country,
+            state,
+            phoneNumber,
+            bankName,
+            accountName,
+            accountNumber
         })
         if (vendor) {
             res.status(201).json({
@@ -26,9 +59,16 @@ export const vendor_signup = asyncHandler(async(req, res) => {
                 message: "Vendor created successfully",
                 data: {
                     id_: vendor._id,
-                    userName: vendor.userName,
                     email: vendor.email,
+                    storeName: vendor.storeName,
                     password: vendor.password,
+                    img: vendor.img,
+                    country: vendor.country,
+                    state: vendor.state,
+                    phoneNumber: vendor.phoneNumber,
+                    bankName: vendor.bankName,
+                    accountName: vendor.accountName,
+                    accountNumber: vendor.accountNumber,
                     token: generateToken(user._id),
                 },
             })
@@ -52,9 +92,16 @@ export const vendor_signin = asyncHandler(async(req, res) => {
             message: "Login successful",
             data: {
                 _id: vendor._id,
-                userName: vendor.userName,
                 email: vendor.email,
+                storeName: vendor.storeName,
                 password: vendor.password,
+                img: vendor.img,
+                country: vendor.country,
+                state: vendor.state,
+                phoneNumber: vendor.phoneNumber,
+                bankName: vendor.bankName,
+                accountName: vendor.accountName,
+                accountNumber: vendor.accountNumber,
                 token: generateToken(vendor._id),
             },
         })
