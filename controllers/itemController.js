@@ -10,7 +10,7 @@ export const create_item = asyncHandler(async(req, res) => {
 
     if(vendor){
         const item = await Item.create({
-            created_by: req.vendor.id,
+            created_by: vendor.id,
             productName, 
             productCategory,
             productSubCategory,
