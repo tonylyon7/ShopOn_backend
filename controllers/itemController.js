@@ -6,7 +6,7 @@ import Vendor from "../models/vendor.js";
 export const create_item = asyncHandler(async(req, res) => {
     const vendor = await Vendor.findById(req.vendor.id)
     const {productName, productCategory, productSubCategory, unitPrice, sellingPrice, costPrice, qtyInStock,
-         orderType, discount, mainImg, addedImages, color, shortDesc, longDesc} = req.body
+         orderType, variationType, discount, mainImg, addedImages, color, shortDesc, longDesc} = req.body
 
     if(vendor){
         const item = await Item.create({
@@ -19,6 +19,7 @@ export const create_item = asyncHandler(async(req, res) => {
             costPrice,
             qtyInStock, 
             orderType,
+            variationType,
             discount, 
             status: "published", 
             mainImg, 
@@ -86,7 +87,7 @@ export const update_single_item = asyncHandler(async(req, res) => {
     const vendor = await Vendor.findById(req.vendor.id)
     const item = await Item.findOne({created_by: req.params.id})
     const {productName, productCategory, productSubCategory, unitPrice, sellingPrice, costPrice, qtyInStock,
-        orderType, discount, mainImg, addedImages, color, shortDesc, longDesc} = req.body
+        orderType, variationType, discount, mainImg, addedImages, color, shortDesc, longDesc} = req.body
     if(vendor && item){
         item.productName = productName || item.productName
         item.productCategory = productCategory || item.productCategory
@@ -96,6 +97,7 @@ export const update_single_item = asyncHandler(async(req, res) => {
         item.costPrice = costPrice || item.costPrice
         item.qtyInStock = qtyInStock || item.qtyInStock
         item.orderType = orderType || item.orderType
+        item.variationType = variationType || item.variationType
         item.discount = discount || item.discount
         item.mainImg = mainImg || item.mainImg
         item.addedImages = addedImages || item.addedImages

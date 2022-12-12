@@ -15,6 +15,9 @@ const itemSchema = mongoose.Schema(
         costPrice: {type: Number},
         qtyInStock:{type: Number},
         orderType: {type: String},
+        variationType: [
+            {type: String}
+        ],
         discount: {type: Number},
         status:{
             type: String,
