@@ -5,19 +5,24 @@ import Vendor from "../models/vendor.js";
 
 export const create_item = asyncHandler(async(req, res) => {
     const vendor = await Vendor.findById(req.vendor.id)
-    const {productName, category, unitPrice, qtyInStock, discount, totalValue, images, shortDesc, longDesc} = req.body
+    const {productName, productCategory, productSubCategory, unitPrice, sellingPrice, costPrice, qtyInStock,
+         orderType, discount, mainImg, addedImages, shortDesc, longDesc} = req.body
 
     if(vendor){
         const item = await Item.create({
-            created_by: req.user.id,
+            created_by: req.vendor.id,
             productName, 
-            category,
+            productCategory,
+            productSubCategory,
             unitPrice, 
+            sellingPrice,
+            costPrice,
             qtyInStock, 
+            orderType,
             discount, 
-            totalValue,
             status: "published", 
-            images, 
+            mainImg, 
+            addedImages,
             shortDesc, 
             longDesc     
         })
@@ -79,15 +84,20 @@ export const get_single_item = asyncHandler(async(req, res) => {
 export const update_single_item = asyncHandler(async(req, res) => {
     const vendor = await Vendor.findById(req.vendor.id)
     const item = await Item.findOne({created_by: req.params.id})
-    const {productName, category ,unitPrice, qtyInStock ,discount, totalValue,  img, shortDesc, longDesc} = req.body
+    const {productName, productCategory, productSubCategory, unitPrice, sellingPrice, costPrice, qtyInStock,
+        orderType, discount, mainImg, addedImages, shortDesc, longDesc} = req.body
     if(vendor && item){
         item.productName = productName || item.productName
-        item.category = category || item.category
+        item.productCategory = productCategory || item.productCategory
+        item.productSubCategory = productSubCategory || item.productSubCategory
         item.unitPrice = unitPrice || item.unitPrice
+        item.sellingPrice = sellingPrice || item.sellingPrice
+        item.costPrice = costPrice || item.costPrice
         item.qtyInStock = qtyInStock || item.qtyInStock
+        item.orderType = orderType || item.orderType
         item.discount = discount || item.discount
-        item.totalValue = totalValue || item.totalValue
-        item.images = images || item.images
+        item.mainImg = mainImg || item.mainImg
+        item.addedImages = addedImages || item.addedImages
         item.shortDesc = shortDesc || item.shortDesc
         item.longDesc = longDesc || item.longDesc
         
