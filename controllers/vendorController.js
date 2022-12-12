@@ -27,20 +27,6 @@ export const vendor_signup = asyncHandler(async(req, res) => {
     } else {
         const hashedPass = await bcrypt.hash(password, 10)
 
-        // const mappedImg = await img.map((vendor, store) => {
-        //     return { vendor, store }
-
-
-        //     // if (mappedImg > 0) {
-        //     //     res.status(201).json({
-        //     //         status: "Ok",
-        //     //         data: {
-        //     //             img: vendor.img
-        //     //         }
-        //     //     })
-        //     // }
-
-        // })
 
         const vendor = await Vendor.create({
             email,
