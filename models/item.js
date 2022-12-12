@@ -25,6 +25,9 @@ const itemSchema = mongoose.Schema(
         addedImages: [
             {type: String}
         ],
+        color: [
+            {type: String}
+        ],
         shortDesc:{type: String},
         longDesc:{type: String},
     },

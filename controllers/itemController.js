@@ -6,7 +6,7 @@ import Vendor from "../models/vendor.js";
 export const create_item = asyncHandler(async(req, res) => {
     const vendor = await Vendor.findById(req.vendor.id)
     const {productName, productCategory, productSubCategory, unitPrice, sellingPrice, costPrice, qtyInStock,
-         orderType, discount, mainImg, addedImages, shortDesc, longDesc} = req.body
+         orderType, discount, mainImg, addedImages, color, shortDesc, longDesc} = req.body
 
     if(vendor){
         const item = await Item.create({
@@ -23,6 +23,7 @@ export const create_item = asyncHandler(async(req, res) => {
             status: "published", 
             mainImg, 
             addedImages,
+            color,
             shortDesc, 
             longDesc     
         })
@@ -85,7 +86,7 @@ export const update_single_item = asyncHandler(async(req, res) => {
     const vendor = await Vendor.findById(req.vendor.id)
     const item = await Item.findOne({created_by: req.params.id})
     const {productName, productCategory, productSubCategory, unitPrice, sellingPrice, costPrice, qtyInStock,
-        orderType, discount, mainImg, addedImages, shortDesc, longDesc} = req.body
+        orderType, discount, mainImg, addedImages, color, shortDesc, longDesc} = req.body
     if(vendor && item){
         item.productName = productName || item.productName
         item.productCategory = productCategory || item.productCategory
@@ -98,6 +99,7 @@ export const update_single_item = asyncHandler(async(req, res) => {
         item.discount = discount || item.discount
         item.mainImg = mainImg || item.mainImg
         item.addedImages = addedImages || item.addedImages
+        item.color = color || item.color
         item.shortDesc = shortDesc || item.shortDesc
         item.longDesc = longDesc || item.longDesc
         
